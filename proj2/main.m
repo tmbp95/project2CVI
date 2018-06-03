@@ -5,10 +5,8 @@ addpath('./scripts/');
 vid = VideoReader('proj2.avi');
 firstFrame = 4835;%i=4635
 lastFrame = 5000;%i=5895
-a = {};
 
-s = struct('Area',{},'Centroid',{},'BoundingBox',{},'Eccentricity',{},'FilledImage',{});
-array = [s];
+
 
 for i=firstFrame:1:lastFrame
     imgbg = read(vid, i-15);
@@ -16,9 +14,9 @@ for i=firstFrame:1:lastFrame
     binaryImage = vessel_detection(imgbg,imgfr);
     %imshow(binaryImage);
     outputBlobs = spatial_validation(binaryImage);
-    a{i} = outputBlobs;
+    array(i) = outputBlobs;
     finalBlobs = time_validation(outputBlobs,a,i);
-    a{i} = finalBlobs;
+    array(i) = finalBlobs;
     imshow(imgfr);
     if(~isempty(finalBlobs))
         for j=1:length(finalBlobs)
