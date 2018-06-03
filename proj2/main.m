@@ -15,7 +15,7 @@ for i=firstFrame:1:lastFrame
     %imshow(binaryImage);
     outputBlobs = spatial_validation(binaryImage);
     array(i) = outputBlobs;
-    finalBlobs = time_validation(outputBlobs,array,i);
+    finalBlobs = time_validation(outputBlobs,a,i);
     array(i) = finalBlobs;
     imshow(imgfr);
     if(~isempty(finalBlobs))
