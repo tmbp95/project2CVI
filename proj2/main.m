@@ -4,8 +4,9 @@ addpath('./scripts/');
 
 vid = VideoReader('proj2.avi');
 firstFrame = 4635;%i=4635
-lastFrame = 4735;%i=5895
+lastFrame = 5895;%i=5895
 a = {};
+b = {};
 
 for i=firstFrame:1:lastFrame
     imgbg = read(vid, i-15);
@@ -25,7 +26,7 @@ for i=firstFrame:1:lastFrame
         end;
     end;
     a{i} = finalBlobs;
-    disp(i);
+    b{i} = blobsToShow;
 %     imshow(imgfr);
 %     if(~isempty(blobsToShow))
 %         for j=1:length(blobsToShow)
@@ -40,18 +41,25 @@ end;
 fid = fopen('movie.txt');
 
 tline = fgetl(fid);
+TP = 0;
+TN = 0;
 while ischar(tline)
-    arrayString = str2num(strsplit(tline));
-    Blobs = a{arrayString(1)};
+    arrayString = strsplit(tline);
+    id = str2double(arrayString{1});
+    Blobs = b{id};
+    
     for i=1:1:length(Blobs)
-        diffCentroidX = abs(Blobs(i).Centroid(1)-(arrayString(2)+(arrayString(4)/2)));
-        diffCentroidY = abs(Blobs(i).Centroid(2)-(arrayString(3)+(arrayString(5)/2)));
-        if(diffCentroidX>=0 || diffCentroidX<=5)
-            if(diffCentroidY>=0 || diffCentroidY<=5)
-                disp('boas pessoal');
+        if(Blobs(i).BoundingBox(1)<str2double(arrayString{2}))
+            if(Blobs(i).BoundingBox(2)<str2double(arrayString{3}))
+                if(Blobs(i).BoundingBox(1)+Blobs(i).BoundingBox(3)>str2double(arrayString{2})+str2double(arrayString{4}))
+                    if(Blobs(i).BoundingBox(2)+Blobs(i).BoundingBox(4)>str2double(arrayString{3})+str2double(arrayString{5}))
+                        TP = TP +1;
+                    end;
+                end;
             end;
-        end;
-            
+        else
+            TN = TN +1;
+        end;            
     end;
     tline = fgetl(fid);
 end
