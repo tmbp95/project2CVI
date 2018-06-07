@@ -38,7 +38,7 @@ end;
 
 
 %% READ TXT
-fid = fopen('movie.txt');
+fid = fopen('movie.gt.txt');
 
 tline = fgetl(fid);
 precision = [];
@@ -102,6 +102,9 @@ fclose(fid);
 
 %%
 figure;
+
 plot(array1,array);
+xlabel("Recall")
+ylabel("Precision")
 
 
